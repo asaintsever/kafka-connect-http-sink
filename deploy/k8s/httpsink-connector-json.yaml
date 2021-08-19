@@ -1,0 +1,29 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: http-sink-json
+  labels:
+    strimzi.io/cluster: httpsinkconnector
+spec:
+  class: asaintsever.httpsinkconnector.HttpSinkConnector
+  tasksMax: 2
+  config:
+    topics: json-events-1,json-events-2
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter.schemas.enable: false
+    ## Here we add a custom field to events read from topics
+    transforms: addCustomField
+    transforms.addCustomField.type: org.apache.kafka.connect.transforms.InsertField$Value
+    transforms.addCustomField.static.field: asaintseverextattr
+    transforms.addCustomField.static.value: "my custom value"
+    ##
+    event.batch.maxsize: 5
+    http.endpoint: "http://echo"
+    http.request.authentication.provider.class: asaintsever.httpsinkconnector.http.authentication.ConfigAuthenticationProvider
+    http.request.authentication.provider.param.header.name: Authorization
+    http.request.authentication.provider.param.header.value: "Basic YWJjZDEyMzR6cXNkOg=="
+    errors.tolerance: all
+    errors.deadletterqueue.topic.name: dlq-httpsinkconnector
+    errors.deadletterqueue.topic.replication.factor: 1
+    errors.deadletterqueue.context.headers.enable: true

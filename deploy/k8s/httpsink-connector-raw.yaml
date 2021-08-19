@@ -1,0 +1,20 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: http-sink-raw
+  labels:
+    strimzi.io/cluster: httpsinkconnector
+spec:
+  class: asaintsever.httpsinkconnector.HttpSinkConnector
+  tasksMax: 2
+  config:
+    topics: raw-events
+    key.converter: org.apache.kafka.connect.storage.StringConverter
+    value.converter: org.apache.kafka.connect.storage.StringConverter
+    event.batch.maxsize: 10
+    http.endpoint: "http://echo"
+    http.request.content.type: "text/plain"
+    errors.tolerance: all
+    errors.deadletterqueue.topic.name: dlq-httpsinkconnector
+    errors.deadletterqueue.topic.replication.factor: 1
+    errors.deadletterqueue.context.headers.enable: true

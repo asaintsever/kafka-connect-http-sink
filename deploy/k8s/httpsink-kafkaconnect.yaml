@@ -1,0 +1,28 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: httpsinkconnector
+  annotations:
+    # use-connector-resources configures this KafkaConnect
+    # to use KafkaConnector resources to avoid
+    # needing to call the Connect REST API directly
+    strimzi.io/use-connector-resources: "true"
+spec:
+  image: asaintsever/kafkaconnect-httpsinkconnector
+  replicas: 1
+  bootstrapServers: "PLAINTEXT://local-kafka-brokers:9092"
+  config:
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1
+    key.converter.schemas.enable: false
+    value.converter.schemas.enable: false
+    internal.key.converter: org.apache.kafka.connect.json.JsonConverter
+    internal.value.converter: org.apache.kafka.connect.json.JsonConverter
+  logging:
+    type: inline
+    loggers:
+      connect.root.logger.level: "INFO"
+  externalConfiguration: {}
+  template:
+    pod: {}

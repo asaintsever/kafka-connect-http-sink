@@ -1,0 +1,29 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: raw-events
+  labels:
+    strimzi.io/cluster: local
+spec:
+  partitions: 10
+  replicas: 1
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: json-events-1
+  labels:
+    strimzi.io/cluster: local
+spec:
+  partitions: 10
+  replicas: 1
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: json-events-2
+  labels:
+    strimzi.io/cluster: local
+spec:
+  partitions: 10
+  replicas: 1
