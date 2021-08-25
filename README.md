@@ -85,20 +85,20 @@ kubectl apply -f deploy/k8s/kafka/cluster.yaml
 kubectl apply -f deploy/k8s/kafka/topics.yaml
 ```
 
-> For testing purpose, let's deploy [Kafkacat](https://docs.confluent.io/platform/current/app-development/kafkacat-usage.html) utility:
+> For testing purpose, let's deploy [kcat](https://github.com/edenhill/kcat) utility (formerly known as `kafkacat`):
 >
 > ```sh
-> kubectl run -i --tty --attach=false kafkacat --image=confluentinc/cp-kafkacat -- cat
+> kubectl run -i --tty --attach=false kcat --command --image=edenhill/kcat:1.7.0 -- cat
 > ```
 
 Check cluster status:
 
 ```sh
 KFK="kubectl exec -i local-kafka-0 -- sh -c"
-TEST="kubectl exec -i kafkacat -- sh -c"
+TEST="kubectl exec -i kcat -- sh -c"
 
 # Get Kafka broker metadata
-${TEST} "kafkacat -b local-kafka-brokers:9092 -L"
+${TEST} "kcat -b local-kafka-brokers:9092 -L"
 
 # Get Kafka broker config
 ${KFK} "bin/kafka-configs.sh --describe --all --bootstrap-server local-kafka-brokers:9092 --broker 0"
@@ -136,9 +136,9 @@ ${TEST} "curl -s -X GET http://httpsinkconnector-connect-api:8083/connectors/htt
 
     ```sh
     # Post single events
-    # (do not forget the 'jq . -c' part for the JSON sample as we must provide a one line string otherwise kafkacat will interpret each line of the file as a new value ...)
-    cat test/sample.txt | ${TEST} "kafkacat -b local-kafka-brokers:9092 -P -t raw-events"
-    cat test/sample.json | jq . -c | ${TEST} "kafkacat -b local-kafka-brokers:9092 -P -t json-events-1"
+    # (do not forget the 'jq . -c' part for the JSON sample as we must provide a one line string otherwise kcat will interpret each line of the file as a new value ...)
+    cat test/sample.txt | ${TEST} "kcat -b local-kafka-brokers:9092 -P -t raw-events"
+    cat test/sample.json | jq . -c | ${TEST} "kcat -b local-kafka-brokers:9092 -P -t json-events-1"
     ```
 
     Look at the HTTP Sink connector's log (you should see outputs from our test HTTP endpoint):
@@ -152,8 +152,8 @@ ${TEST} "curl -s -X GET http://httpsinkconnector-connect-api:8083/connectors/htt
     ```sh
     # Post batches of events
     # (each event must be on one line in the batch file)
-    cat test/sample.txt.batch | ${TEST} "kafkacat -b local-kafka-brokers:9092 -P -t raw-events"
-    cat test/sample.json.batch | ${TEST} "kafkacat -b local-kafka-brokers:9092 -P -t json-events-1"
+    cat test/sample.txt.batch | ${TEST} "kcat -b local-kafka-brokers:9092 -P -t raw-events"
+    cat test/sample.json.batch | ${TEST} "kcat -b local-kafka-brokers:9092 -P -t json-events-1"
     ```
 
     Look at the HTTP Sink connector's log (you should see outputs from our test HTTP endpoint with events sent in batch):
@@ -165,9 +165,9 @@ ${TEST} "curl -s -X GET http://httpsinkconnector-connect-api:8083/connectors/htt
 To inspect content of Kafka topics and errors from HTTP Sink connector (posted in dlq-httpsinkconnector topic):
 
 ```sh
-${TEST} "kafkacat -b local-kafka-brokers:9092 -C -t raw-events -q -f '%T %k %s %p %o\n' -e"
-${TEST} "kafkacat -b local-kafka-brokers:9092 -C -t json-events-1 -q -f '%T %k %s %p %o\n' -e"
+${TEST} "kcat -b local-kafka-brokers:9092 -C -t raw-events -q -f '%T %k %s %p %o\n' -e"
+${TEST} "kcat -b local-kafka-brokers:9092 -C -t json-events-1 -q -f '%T %k %s %p %o\n' -e"
 
 # For HTTP Sink connector errors
-${TEST} "kafkacat -b local-kafka-brokers:9092 -C -t dlq-httpsinkconnector -q -f '%T %h %k %s %p %o\n' -e"
+${TEST} "kcat -b local-kafka-brokers:9092 -C -t dlq-httpsinkconnector -q -f '%T %h %k %s %p %o\n' -e"
 ```
