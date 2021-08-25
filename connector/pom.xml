@@ -169,6 +169,7 @@
                             <name>http-sink-connector</name>
                             <title>HTTP Sink Connector</title>
                             <description>The HTTP Sink Connector allows you to send events from Kafka topics to HTTP endpoint.</description>
+                            <documentationUrl>https://github.com/asaintsever/kafka-connect-http-sink/blob/main/README.md</documentationUrl>
                             <ownerUsername>asaintsever</ownerUsername>
                             <ownerUrl>https://github.com/asaintsever</ownerUrl>
                             <ownerType>user</ownerType>
