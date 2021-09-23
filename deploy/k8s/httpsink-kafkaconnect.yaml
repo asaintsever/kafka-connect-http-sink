@@ -8,7 +8,7 @@ metadata:
     # needing to call the Connect REST API directly
     strimzi.io/use-connector-resources: "true"
 spec:
-  image: asaintsever/kafkaconnect-httpsinkconnector
+  image: asaintsever/kafkaconnect-httpsinkconnector:1.0.0
   replicas: 1
   bootstrapServers: "PLAINTEXT://local-kafka-brokers:9092"
   config:

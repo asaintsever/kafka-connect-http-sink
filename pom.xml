@@ -14,18 +14,18 @@
 	    <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
 	    <maven.failsafe.plugin.version>2.22.0</maven.failsafe.plugin.version>
 	    <maven.kafka.connect.plugin.version>0.12.0</maven.kafka.connect.plugin.version>
-		<java.version>11</java.version>
+	    <java.version>11</java.version>
 		
-		<slf4j.version>1.7.30</slf4j.version>
-		<kafka.version>2.7.0</kafka.version>
-		<!-- Not needed except if our connector has to deal with AVRO directly
-		<kafka.avro.version>6.0.1</kafka.avro.version>
-		<avro.version>1.9.2</avro.version>
-		-->
-		<jackson.version>2.10.2</jackson.version>
+	    <slf4j.version>1.7.30</slf4j.version>
+	    <kafka.version>2.7.0</kafka.version>
+	    <!-- Not needed except if our connector has to deal with AVRO directly
+	    <kafka.avro.version>6.0.1</kafka.avro.version>
+	    <avro.version>1.9.2</avro.version>
+	    -->
+	    <jackson.version>2.10.2</jackson.version>
 		
-		<junit.version>5.6.2</junit.version>
-		<mockito.version>3.3.3</mockito.version>
+	    <junit.version>5.6.2</junit.version>
+	    <mockito.version>3.3.3</mockito.version>
 	</properties>
 	
 	<repositories>
@@ -35,7 +35,15 @@
             <url>https://packages.confluent.io/maven/</url>
         </repository>
     </repositories>
-    
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+
 	<dependencies>
 	    <!-- 
 	    Kafka Connect API & Runtime *must* not be part of our plugin/package (see Kafka Connect doc): 
@@ -176,7 +184,7 @@
                             <sourceUrl>https://github.com/asaintsever/kafka-connect-http-sink/blob/main/connector</sourceUrl>
                             <dockerNamespace>asaintsever</dockerNamespace>
                             <dockerName>kafkaconnect-httpsinkconnector</dockerName>
-                            <dockerTag>latest</dockerTag>
+                            <dockerTag>${project.version}</dockerTag>
                             <componentTypes>
                                 <componentType>sink</componentType>
                             </componentTypes>

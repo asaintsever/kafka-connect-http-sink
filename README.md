@@ -2,7 +2,7 @@
 
 The HTTP Sink Connector is a sample implementation of a Kafka Connect connector. This is a `sink` connector, reading events from kafka topics to send them to some HTTP endpoint.
 
-Using connector's configuration, you can set the list of Kafka topics to read from and the target HTTP endpoint (only one supported is this implementation). You can also provide your own event formatters (see default [PassthroughStringEventFormatter](connector/src/main/java/asaintsever/httpsinkconnector/event/formatter/PassthroughStringEventFormatter.java) as an example) and HTTP authentication providers (see default [NoAuthenticationProvider](connector/src/main/java/asaintsever/httpsinkconnector/http/authentication/NoAuthenticationProvider.java) and [ConfigAuthenticationProvider](connector/src/main/java/asaintsever/httpsinkconnector/http/authentication/ConfigAuthenticationProvider.java) as examples).
+Using connector's configuration, you can set the list of Kafka topics to read from and the target HTTP endpoint (only one supported is this implementation). You can also provide your own event formatters (see default [PassthroughStringEventFormatter](src/main/java/asaintsever/httpsinkconnector/event/formatter/PassthroughStringEventFormatter.java) as an example) and HTTP authentication providers (see default [NoAuthenticationProvider](src/main/java/asaintsever/httpsinkconnector/http/authentication/NoAuthenticationProvider.java) and [ConfigAuthenticationProvider](src/main/java/asaintsever/httpsinkconnector/http/authentication/ConfigAuthenticationProvider.java) as examples).
 
 This connector will batch events before sending them in order to reduce the number of calls and not overwhelm the HTTP endpoint.
 
@@ -137,8 +137,8 @@ ${TOOLSPOD} "curl -s -X GET http://httpsinkconnector-connect-api:8083/connectors
     ```sh
     # Post single events
     # (do not forget the 'jq . -c' part for the JSON sample as we must provide a one line string otherwise kcat will interpret each line of the file as a new value ...)
-    cat test/sample.txt | ${KCATPOD} "kcat -b local-kafka-brokers:9092 -P -t raw-events"
-    cat test/sample.json | jq . -c | ${KCATPOD} "kcat -b local-kafka-brokers:9092 -P -t json-events-1"
+    cat samples/sample.txt | ${KCATPOD} "kcat -b local-kafka-brokers:9092 -P -t raw-events"
+    cat samples/sample.json | jq . -c | ${KCATPOD} "kcat -b local-kafka-brokers:9092 -P -t json-events-1"
     ```
 
     Look at the HTTP Sink connector's log (you should see outputs from our test HTTP endpoint):
@@ -152,8 +152,8 @@ ${TOOLSPOD} "curl -s -X GET http://httpsinkconnector-connect-api:8083/connectors
     ```sh
     # Post batches of events
     # (each event must be on one line in the batch file)
-    cat test/sample.txt.batch | ${KCATPOD} "kcat -b local-kafka-brokers:9092 -P -t raw-events"
-    cat test/sample.json.batch | ${KCATPOD} "kcat -b local-kafka-brokers:9092 -P -t json-events-1"
+    cat samples/sample.txt.batch | ${KCATPOD} "kcat -b local-kafka-brokers:9092 -P -t raw-events"
+    cat samples/sample.json.batch | ${KCATPOD} "kcat -b local-kafka-brokers:9092 -P -t json-events-1"
     ```
 
     Look at the HTTP Sink connector's log (you should see outputs from our test HTTP endpoint with events sent in batch):

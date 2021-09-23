@@ -1,6 +1,7 @@
 SHELL=/bin/bash
 
-FQIN:=asaintsever/kafkaconnect-httpsinkconnector
+VERSION:=1.0.0
+FQIN:=asaintsever/kafkaconnect-httpsinkconnector:$(VERSION)
 CONTAINER_RUNTIME:=$(shell command -v docker 2> /dev/null || echo podman)	# Use docker by default if found, else try podman
 
 .SILENT: ;  	# No need for @
@@ -11,7 +12,6 @@ CONTAINER_RUNTIME:=$(shell command -v docker 2> /dev/null || echo podman)	# Use 
 
 connector-archive:
 	echo "Building Kafka Connect connector archive ..."
-	cd connector
 	mvn clean package
 
 connector-image:

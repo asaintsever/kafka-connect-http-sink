@@ -1,6 +1,6 @@
 FROM maven:3.8.1-openjdk-11 as build
 
-COPY connector/ /connector/
+COPY . /connector/
 
 RUN cd /connector && mvn clean package
 
