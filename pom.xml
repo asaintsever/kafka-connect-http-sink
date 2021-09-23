@@ -181,7 +181,7 @@
                             <ownerUsername>asaintsever</ownerUsername>
                             <ownerUrl>https://github.com/asaintsever</ownerUrl>
                             <ownerType>user</ownerType>
-                            <sourceUrl>https://github.com/asaintsever/kafka-connect-http-sink/blob/main/connector</sourceUrl>
+                            <sourceUrl>https://github.com/asaintsever/kafka-connect-http-sink</sourceUrl>
                             <dockerNamespace>asaintsever</dockerNamespace>
                             <dockerName>kafkaconnect-httpsinkconnector</dockerName>
                             <dockerTag>${project.version}</dockerTag>
