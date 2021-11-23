@@ -2,7 +2,7 @@
 
 The HTTP Sink Connector is a sample implementation of a Kafka Connect connector. This is a `sink` connector, reading events from kafka topics to send them to some HTTP endpoint.
 
-Using connector's configuration, you can set the list of Kafka topics to read from and the target HTTP endpoint (only one supported is this implementation). You can also provide your own event formatters (see default [PassthroughStringEventFormatter](src/main/java/asaintsever/httpsinkconnector/event/formatter/PassthroughStringEventFormatter.java) as an example) and HTTP authentication providers (see default [NoAuthenticationProvider](src/main/java/asaintsever/httpsinkconnector/http/authentication/NoAuthenticationProvider.java) and [ConfigAuthenticationProvider](src/main/java/asaintsever/httpsinkconnector/http/authentication/ConfigAuthenticationProvider.java) as examples).
+Using connector's configuration, you can set the list of Kafka topics to read from and the target HTTP endpoint (only one supported in this implementation). You can also provide your own event formatters (see default [PassthroughStringEventFormatter](src/main/java/asaintsever/httpsinkconnector/event/formatter/PassthroughStringEventFormatter.java) as an example) and HTTP authentication providers (see default [NoAuthenticationProvider](src/main/java/asaintsever/httpsinkconnector/http/authentication/NoAuthenticationProvider.java) and [ConfigAuthenticationProvider](src/main/java/asaintsever/httpsinkconnector/http/authentication/ConfigAuthenticationProvider.java) as examples).
 
 This connector will batch events before sending them in order to reduce the number of calls and not overwhelm the HTTP endpoint.
 
